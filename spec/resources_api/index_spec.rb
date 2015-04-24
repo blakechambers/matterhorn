@@ -80,6 +80,32 @@ RSpec.describe "index" do
 
     end
 
+    context "when paging" do
+
+      let!(:posts){  
+        5.times.map { resource_class.make! }
+      }
+
+      it "should allow a page param" do
+        request_params.merge! offset: "1"
+        perform_request!
+        expect(data.execute.map{|hsh| hsh["_id"] }).to eql(Post.order_by(:created_at.desc).all[1..-1].map(&:id).map(&:to_s))
+      end
+
+      it "should allow a per_page param" do
+        request_params.merge! limit: "1"
+        perform_request!
+        expect(data.execute.map{|hsh| hsh["_id"] }).to eql(Post.order_by(:created_at.desc).all[0..0].map(&:id).map(&:to_s))
+      end 
+
+      it "should allow a page and per_page param" do
+        request_params.merge! limit: "2", offset: 2
+        perform_request!
+        expect(data.execute.map{|hsh| hsh["_id"] }).to eql(Post.order_by(:created_at.desc).all[2..3].map(&:id).map(&:to_s))
+      end
+
+    end
+
     context "when ordering" do
       let!(:resources) { [ resource_class.make!(created_at: Time.zone.now ),
                          resource_class.make!(created_at: Time.zone.now - 100),
