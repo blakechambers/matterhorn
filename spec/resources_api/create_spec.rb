@@ -33,7 +33,7 @@ RSpec.describe "create" do
     # context "relationship links" do
     #   let(:nested_params) do
     #     {
-    #       author: {
+    #       user: {
     #         id: current_user.id.to_s
     #       }
     #     }

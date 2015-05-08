@@ -2,6 +2,7 @@ module Matterhorn
   module Links
     module Relation
       class Base < Links::SetMember
+        extend ActiveModel::Naming
 
         attr_reader :resource_field_key
         attr_reader :inverse_field_key
@@ -124,8 +125,30 @@ module Matterhorn
 
         def scope(resource)
           @scope ||= begin
-            config.scope.call(scope_class(resource), self, request_env)
+           config.scope.call(scope_class(resource), self, request_env)
           end
+        end
+
+        def url_builder
+          request_env[:url_builder]
+        end
+
+        def persisted?
+          true
+        end
+
+        def to_model
+          self
+        end
+
+        def to_param
+          name
+        end
+
+        private 
+
+        def self.name
+          "Link"
         end
 
       end

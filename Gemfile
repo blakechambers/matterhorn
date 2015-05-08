@@ -8,6 +8,7 @@ end
 group :development, :test do
   gem "bundler",       "~> 1.9.1"
   gem "rake",          "~> 10.0"
+  gem "pry"
 end
 
 group :test do

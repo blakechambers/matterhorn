@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
   resources :posts do
-    resources :comments
+    resource  :user
     resource  :topic
     resource  :vote
-    resources :topics
+    resources :comments
+    resources :links
+    resources :tags
   end
 
-  resources :votes
-  resources :authors
-  resources :users
   resources :comments
+  resources :tags
   resources :topics
+  resources :users
+  resources :votes
 end

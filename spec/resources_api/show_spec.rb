@@ -27,18 +27,11 @@ RSpec.describe "show" do
     end
 
     it "should provide links object in response" do
-      request_params.merge! include: "author"
+      request_params.merge! include: "user"
       perform_request!
 
       expect(body[:links].execute).to be_kind_of(Hash)
       expect(body[:links].execute).to be_kind_of(Hash)
-    end
-
-    it "should list provided inclusions" do
-      perform_request!
-
-      expect(body[:links][:vote].execute).to eq(nil)
-      expect(body[:links][:author].execute).to eq(nil)
     end
 
     context "when defining a custom scope" do
@@ -54,12 +47,12 @@ RSpec.describe "show" do
         expect(body[:includes].first[:id].execute).to eq(users_votes.id.to_s)
       end
 
-      it "should include scoped authors" do
-        request_params.merge! include: "author"
+      it "should include scoped users" do
+        request_params.merge! include: "user"
         perform_request!
 
         expect(body[:includes].execute.count).to eq(1)
-        expect(body[:includes].first[:id].execute).to eq(resource.author_id.to_s)
+        expect(body[:includes].first[:id].execute).to eq(resource.user_id.to_s)
       end
 
       it "should provide complete links" do
@@ -68,11 +61,16 @@ RSpec.describe "show" do
 
         # TODO: this should be swapped to use a nested route, e.g. http://example.org/posts/{posts._id}/votes
         # TODO: this is wrong these are appearing under "data/links" should be at the top level "links"
-        expect(links[:vote].execute).to             eq({"linkage"=>{"post_id"=> resource.id.to_s, "type"=>"votes"}, "related"=>"http://example.org/posts/#{resource.id.to_s}/vote"})
-        expect(links[:author].execute).to           eq({"linkage"=>{"id"=>resource.author_id.to_s, "type"=>"users"}, "related"=>"http://example.org/users/#{resource.author_id.to_s}"})
+        vote_linkage      = {"linkage"=>{"post_id"=> resource.id.to_s, "type"=>"votes"}, "related"=>"http://example.org/posts/#{resource.id.to_s}/vote"}
+        user_linkage    = {"linkage"=>{"id"=>resource.user_id.to_s, "type"=>"users"}, "related"=>"http://example.org/posts/#{resource.id.to_s}/user"}
+        comments_linkage  = {"linkage"=>{"post_id"=> resource.id.to_s, "type"=>"comments"}, "related"=>"http://example.org/posts/#{resource.id.to_s}/comments"}
+        topic_linkage     = {"linkage"=> {"post_id"=> resource.id.to_s, "type"=>"topics"}, "related"=>"http://example.org/posts/#{resource.id.to_s}/topic"}
+
+        expect(links[:vote].execute).to     eq(vote_linkage)
+        expect(links[:user].execute).to   eq(user_linkage)
+        expect(links[:comments].execute).to eq(comments_linkage)
+        expect(links[:topic].execute).to    eq(topic_linkage)
         # expect(links[:initial_comments].execute).to eq({"linkage"=>{"id"=>"1,2,3", "type"=>"comments"}, "related"=>"http://example.org/comments/1,2,3"})
-        expect(links[:comments].execute).to         eq({"linkage"=>{"post_id"=> resource.id.to_s, "type"=>"comments"}, "related"=>"http://example.org/posts/#{resource.id.to_s}/comments"})
-        expect(links[:topics].execute).to           eq({"linkage"=> [], "related"=>"http://example.org/posts/#{resource.id.to_s}/topics"})
       end
 
     end
@@ -81,15 +79,15 @@ RSpec.describe "show" do
     #       for now. See https://github.com/blakechambers/matterhorn/pull/63 for
     #       more information.
     #
-    # context "with no author" do
-    #   let(:resource) { resource_class.make! author: nil, initial_comments_ids: [1,2,3] }
+    # context "with no user" do
+    #   let(:resource) { resource_class.make! user: nil, initial_comments_ids: [1,2,3] }
     #
-    #   it "should not return the author link if the author id is not in the response" do
+    #   it "should not return the user link if the user id is not in the response" do
     #     perform_request!
     #
-    #     expect(data[:author_id].execute).to be_nil
-    #     expect(data[:links][:author][:linkage].execute).to be_nil
-    #     expect(data[:links][:author][:related].execute).to be_nil
+    #     expect(data[:user_id].execute).to be_nil
+    #     expect(data[:links][:user][:linkage].execute).to be_nil
+    #     expect(data[:links][:user][:related].execute).to be_nil
     #   end
     #
     # end

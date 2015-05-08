@@ -7,22 +7,29 @@ class Post
   field :body
   field :initial_comments_ids, type: Array
 
-  belongs_to :author, class_name: "User"
-
-  has_and_belongs_to_many :topics, inverse_of: nil
+  belongs_to :user
 
   has_many :comments
   has_one  :topic
   has_many :votes
+  has_and_belongs_to_many :tags, inverse_of: nil
 
   vote_scope = proc do |scope_class, set_member, env|
     env[:current_user].votes.all
   end
 
-  add_link :topics,
-    nested:         true
+  add_link :user,
+    nested: true
 
-  add_link :author
+  add_link :comments,
+    nested: true
+
+  #add_link :tags,
+    #nested: true
+
+  add_link :topic,
+    nested: true,
+    singleton: true
 
   add_link :vote,
     relation_name:  :votes,
@@ -31,11 +38,8 @@ class Post
     nested:         true,
     type:           :has_one
 
-  add_link :comments,
-    nested:         true
-
   validates_presence_of :body
 
-  accepts_nested_attributes_for :author, :topic
+  accepts_nested_attributes_for :user, :topic
 
 end

@@ -33,7 +33,18 @@ module Matterhorn
           options[:request_env] = request_env
           return resource if resource.kind_of?(Hash)
 
-          serializer = resource.kind_of?(Enumerable) ? ScopedCollectionSerializer : ScopedResourceSerializer
+          serializer = if resource.kind_of?(Matterhorn::Links::Relation::BelongsTo)
+           LinkSerializer
+          elsif resource.kind_of?(Matterhorn::Links::Relation::HasOne)
+            LinkSerializer
+          elsif resource.kind_of?(Matterhorn::Links::Relation::HasMany)
+            LinkSerializer
+          elsif resource.kind_of?(Enumerable)
+            ScopedCollectionSerializer
+          else
+            ScopedResourceSerializer
+          end
+
           ser = serializer.new(resource, options)
         end
 
@@ -44,6 +55,7 @@ module Matterhorn
           prepend ActiveModelSerializersPatch
         end
       end
+
 
     end
   end

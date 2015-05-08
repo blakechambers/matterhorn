@@ -21,8 +21,12 @@ module UrlTestHelpers
       klass
     end
 
+    let(:url_options) do
+      {host: "example.org" , }
+    end
+
     let(:url_builder) do
-      url_builder_class.new url_options: { host: "example.org" }
+      url_builder_class.new url_options: url_options
     end
 
   end

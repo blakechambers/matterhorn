@@ -1,15 +1,5 @@
 require 'machinist/mongoid'
 
-Post.blueprint do
-  author  { User.make! }
-  body    { "body" }
-  # title   { "title" }
-  topic   { Topic.make! }
-end
-
-Topic.blueprint do
-  name    { "name" }
-end
 
 Comment.blueprint do
   user  { User.make! }
@@ -17,9 +7,21 @@ Comment.blueprint do
   text  { "comment" }
 end
 
+
+Post.blueprint do
+  user  { User.make! }
+  body    { "body" }
+  # title   { "title" }
+  topic   { Topic.make! }
+end
+
 User.blueprint do
   auth_token  { "token" }
   name        { "name" }
+end
+
+Topic.blueprint do
+  name    { "name" }
 end
 
 Vote.blueprint do

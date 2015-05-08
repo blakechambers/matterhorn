@@ -15,5 +15,5 @@ class PostsController < Matterhorn::Base
   paginates_with Matterhorn::Paging::Default
 
   allow_resource_params \
-    :body, :title, author: [ :id ], topic: [:id, :name]
+    :body, :title, user: [ :id ], topic: [:id, :name]
 end

@@ -7,16 +7,17 @@ module Matterhorn
       # This will generally be a Criteria, Model or a small array of context
       # objects (i.e. in the case of nested routes /posts/1,2,3/vote, the 3
       # posts would be an array).
-      attr_reader :context
-      attr_reader :options
-      attr_reader :foreign_key
-      attr_reader :inclusion_lookup_key
-      attr_reader :metadata
-      attr_reader :name
-      attr_reader :relation_name
-      attr_reader :request_env
-      attr_reader :serializer
-      attr_reader :template_key
+      attr_accessor :request_env
+
+      attr_reader   :context
+      attr_reader   :options
+      attr_reader   :foreign_key
+      attr_reader   :inclusion_lookup_key
+      attr_reader   :metadata
+      attr_reader   :name
+      attr_reader   :relation_name
+      attr_reader   :serializer
+      attr_reader   :template_key
 
       def initialize(name, config, options={})
         @name             = name
@@ -26,6 +27,7 @@ module Matterhorn
         @context          = options[:context]
         @request_env      = options[:request_env]
         @relation_name    = config.relation_name
+        @serializer       = config.serializer
         @metadata         = config.metadata
         @inclusion        = false
       end
@@ -36,6 +38,10 @@ module Matterhorn
 
       def url_builder
         request_env[:url_builder]
+      end
+
+      def active_model_serializer
+        serializer || Matterhorn::Serialization::LinkSerializer
       end
 
       def template_for(resource)

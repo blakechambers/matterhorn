@@ -17,9 +17,6 @@ RSpec.describe "index" do
   ie(:content_type)    { expect(headers["Content-Type"]).to include(Matterhorn::CONTENT_TYPE) }
   ie(:utf8)            { expect(headers["Content-Type"]).to include("charset=utf-8") }
   ie(:collection_body) { expect(data.execute).to be_an(Array) }
-  ie(:link_vote)       { expect(body[:links][:votes].execute).to eq(nil) }
-  ie(:link_author)     { expect(body[:links][:author].execute).to eq(nil) }
-  ie(:link_comments)   { expect(body[:links][:initial_comments].execute).to eq(nil) }
 
   with_request "GET /#{collection_name}.json" do
 
@@ -45,7 +42,7 @@ RSpec.describe "index" do
       its_status_should_be 406
       ie(:collection_body) { "do nothing" }
       ie(:link_vote)       { "do nothing" }
-      ie(:link_author)     { "do nothing" }
+      ie(:link_user)     { "do nothing" }
       ie(:link_comments)   { "do nothing" }
 
       perform_request!
@@ -64,7 +61,7 @@ RSpec.describe "index" do
 
       let!(:users_vote) { Vote.make! user: current_user, post: post }
       let!(:other_vote) { Vote.make! post: post }
-      let(:post)        { Post.make! author: current_user }
+      let(:post)        { Post.make! user: current_user }
 
       it "should included scoped votes" do
         # pending "INCLUDES"
@@ -76,8 +73,6 @@ RSpec.describe "index" do
       end
 
       it "should include scoped authors" do
-        # pending "INCLUDES"
-
         request_params.merge! include: "author"
         perform_request!
 
@@ -163,7 +158,7 @@ RSpec.describe "index" do
         ie(:utf8)            { "do nothing" }
         ie(:collection_body) { "do nothing" }
         ie(:link_vote)       { "do nothing" }
-        ie(:link_author)     { "do nothing" }
+        ie(:link_user)     { "do nothing" }
         ie(:link_comments)   { "do nothing" }
 
         expect{ perform_request! }.to raise_exception(Matterhorn::Ordering::InvalidOrder)

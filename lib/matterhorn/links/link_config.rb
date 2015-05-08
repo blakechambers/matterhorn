@@ -41,6 +41,7 @@ module Matterhorn
       attr_reader   :nested
       attr_reader   :relation_name
       attr_reader   :scope
+      attr_reader   :serializer
       attr_reader   :singleton
       attr_accessor :type
 
@@ -51,6 +52,7 @@ module Matterhorn
 
         @relation_name = options.delete(:relation_name) || @name
         @nested        = options.delete(:nested)
+        @serializer    = options.delete(:serializer)
         @singleton     = options.delete(:singleton)
         @scope         = options.delete(:scope) || DEFAULT_SCOPE
         @type          = options.delete(:type)
