@@ -18,6 +18,7 @@ module Matterhorn
       attr_reader   :relation_name
       attr_reader   :serializer
       attr_reader   :template_key
+      attr_reader   :collection_params
 
       def initialize(name, config, options={})
         @name             = name
@@ -26,14 +27,11 @@ module Matterhorn
         @options          = options
         @context          = options[:context]
         @request_env      = options[:request_env]
+        @collection_params = options[:collection_params]
         @relation_name    = config.relation_name
         @serializer       = config.serializer
         @metadata         = config.metadata
         @inclusion        = false
-      end
-
-      def set_inclusion
-        @inclusion = true
       end
 
       def url_builder
@@ -63,11 +61,11 @@ module Matterhorn
 
         opts = with_matterhorn_resource_opts(resource, opts)
 
-        if !@inclusion and request_env[:collection_params]
+        if collection_params
           if opts.last.kind_of?(Hash)
-            opts.last.merge(request_env[:collection_params])
+            opts.last.merge(collection_params)
           else
-            opts.append(request_env[:collection_params].clone)
+            opts.append(collection_params.clone)
           end
         end
 

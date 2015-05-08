@@ -20,7 +20,10 @@ module Matterhorn
           hash["links"] = link_set_serializer.serializable_hash
 
           if respond_to?(:order_config) and order_config
-            link_set_serializer = LinkSetSerializer.new(options[:order_config].links(context: object, request_env: request_env), context: criteria)
+            link_set_options = { context: object, 
+                                 collection_params: request_env[:collection_params], 
+                                 request_env: request_env}
+            link_set_serializer = LinkSetSerializer.new(options[:order_config].links(link_set_options), context: criteria)
             hash["orders"] = link_set_serializer.serializable_hash
           end
 

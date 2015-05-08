@@ -47,8 +47,6 @@ module Matterhorn
           model_links.merge!(self_links.config)
         end
 
-        model_links.set_inclusion
-
         link_set_serializer = LinkSetSerializer.new(model_links, context: object)
         link_set_serializer.serializable_hash
       end

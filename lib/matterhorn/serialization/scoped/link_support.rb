@@ -11,7 +11,10 @@ module Matterhorn
 
         def links
           @links ||= begin
-            link_set_options = { context: object, request_env: request_env }
+            link_set_options = { context: object, 
+                                 collection_params: request_env[:collection_params],
+                                 request_env: request_env}
+            model_links = Links::LinkSet.new(object_link_config, link_set_options)
             self_config = Links::LinkConfig.new(nil, :self, type: :self)
             self_links  = Links::LinkSet.new({self: self_config}, link_set_options)
 
