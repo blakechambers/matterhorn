@@ -2,7 +2,7 @@
 
 ## Fetching relationships
 
-This is based around [#70][70]. 
+This is based around [#70][70].
 
 see [fetching relationships](http://jsonapi.org/format/#fetching-relationships).
 
@@ -43,13 +43,20 @@ See [updating relationships](http://jsonapi.org/format/#crud-updating-relationsh
 - each response should provide a top level "self" link, for the above example that would be "/articles/1/links/author".
 - [x] related should call the set_members url_for method with the parent object.  assuming the example above that would be: `set_member.url_for(article)`  where article is `Article.find("1")`.
 - [x] `data` should be set to the output of [`linkage` from the set_member instance][linkage] and should always be available.  Linkage is not always provided in the current serialization due to concerns for creating n+1 queries.  On has_many and has_one relations, linkage **should** still be provided by the new LinkSerializer (under the data top-level key), but **should not** be added back into the normal links serialization (i.e. when serializing the article).
+- [ ] When a link relation is fetched that **DOES NOT** exist, the
+  server should respond with 404. - http://jsonapi.org/format/#fetching-relationships-responses-404
 
 To be able to get the "related" link, you'll need to rewrite the association chain to where it works correctly.
 
 ### Updating/Creating
 
-- [ ] For all relation actions, an exception should be raised when a
-  relation cannot be found. 
+- [ ] When a PATCH, POST or DELETE is requested that **DOES NOT** exist for a link relation, the
+  server should respond with 404. While the JSON API spec is not
+  specific here, it does not prevent it. Also:
+    * For a fetch a 404 is specifically specified when relation does
+      not exist
+    * THe following section supports that a 404 is valid:
+        http://jsonapi.org/format/#crud-updating-relationship-responses-other
 - [ ] A `has_one`/`belongs_to` relation must allow a `PATCH` via linkage to:
     * Create a relation (JSON API & PATCH HTTP spec infers this)
     * Update a relation via linkage.
@@ -64,10 +71,16 @@ To be able to get the "related" link, you'll need to rewrite the association cha
     * appends relation to current has_many relationships, **duplicates
       should not be created**
     * `data` body must be array either empty or containing linkages.
+    * `null` bodies should not modify existing relations.
     * A 204 sent to client if either relation member(s) already exist **OR** were
       created.
-- [ ] For `DELETE` of `has_many` the server should: 
-    * Delete all relation linkage members or return 403.
+- [ ] For `DELETE` of `has_many` the server should:
+    * Delete **all** relation linkage members supplied in client request **or** return 403. The JSON API spec is specific about this:
+
+    > If the client makes a DELETE request to a relationship URL, the
+    > server MUST delete the specified members from the relationship or
+    > return a 403 Forbidden response.
+
     * If members do not exist on relation already **OR** members are
       successfully deleted the server should reply with 204.
 - [ ] Errors
@@ -83,7 +96,7 @@ empty body:
   Content-Type: application/vnd.api+json
 ```
 
-#### has_one/belongs_to 
+#### has_one/belongs_to
 
 In this example, the Post's author could be added or updated as
 relation.
@@ -106,7 +119,7 @@ This demonstrates where a relation is removed from parent.
   }
 ```
 
-#### has_many 
+#### has_many
 
 Example of `PATCH`. In this example **all** the tags for Post are
 replaced or created.
@@ -123,7 +136,7 @@ replaced or created.
 ```
 
 Example of `POST`, below the tags sent to server are added to parent,
-existing members are unmodified. 
+existing members are unmodified.
 
 `POST /posts/23/links/tags`
 
@@ -135,9 +148,21 @@ existing members are unmodified.
   }
 ```
 
+Example of `null` data POST on relation. Any existing relation(s) should be unmodified.
+
+`POST /posts/23/links/tags`
+
+```json
+  {
+    "data": [
+      null
+     ]
+  }
+```
+
 Lastly, example of `DELETE` for has_many. The linkage members will be
 removed from parent relation, but any other members on relation are
-unchanged. So if this post has 4 tags, only 2 are deleted. 
+unchanged. So if this post has 4 tags, only 2 are deleted.
 
 `DELETE /posts/23/links/tags`
 
@@ -158,4 +183,3 @@ unchanged. So if this post has 4 tags, only 2 are deleted.
 [77]: https://github.com/blakechambers/matterhorn/issues/77
 [inthecode]: https://github.com/blakechambers/matterhorn/blob/master/lib/matterhorn/serialization/builder_support.rb#L36
 [linkage]: https://github.com/blakechambers/matterhorn/blob/8d39e0040392a86bbe655d7980d67ce6c5f42770/lib/matterhorn/links/relation/base.rb#L92-L99
-
