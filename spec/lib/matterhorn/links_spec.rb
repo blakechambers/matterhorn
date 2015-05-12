@@ -5,17 +5,8 @@ require "action_dispatch/routing"
 RSpec.describe "Matterhorn::Links" do
   include ClassBuilder
 
-  let(:base_class) do
-    define_class(:BaseKlass) do
-      include Mongoid::Document
-      include Matterhorn::Links::LinkSupport
-    end
-  end
-
   let(:klass) do
-    define_class(:Message, base_class) do
-      include Mongoid::Document
-
+    define_model(:Message) do
       belongs_to :author, class_name: "User"
       add_link :author
     end
@@ -41,16 +32,14 @@ RSpec.describe "Matterhorn::Links" do
     # end
 
     let!(:article_class) do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         belongs_to :author
         add_link   :author
       end
     end
 
     let!(:author_class) do
-      define_class(:Author) do
-        include Mongoid::Document
-
+      define_model(:Author) do
         field :name
       end
     end
@@ -91,7 +80,7 @@ RSpec.describe "Matterhorn::Links" do
 
       it "should raise and error when type cannot be found" do
         expect {
-          define_class(:Article, base_class) do
+          define_model(:Article) do
             add_link   :author
           end
         }.to raise_error
@@ -99,7 +88,7 @@ RSpec.describe "Matterhorn::Links" do
 
       context 'belongs_to' do
         let!(:article_class) do
-          define_class(:Article, base_class) do
+          define_model(:Article) do
             belongs_to :author
             add_link   :author
           end
@@ -115,7 +104,7 @@ RSpec.describe "Matterhorn::Links" do
         let(:link_config) { article_class.__link_configs[:authors] }
 
         let!(:article_class) do
-          define_class(:Article, base_class) do
+          define_model(:Article) do
             has_many :authors
             add_link :authors
           end
@@ -131,7 +120,7 @@ RSpec.describe "Matterhorn::Links" do
         let(:link_config) { article_class.__link_configs[:author] }
 
         let!(:article_class) do
-          define_class(:Article, base_class) do
+          define_model(:Article) do
             has_one :author
             add_link :author
           end
@@ -148,7 +137,7 @@ RSpec.describe "Matterhorn::Links" do
 
 
     it "should accept 'singleton' option" do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         has_many :authors
         add_link :author, relation_name: :authors, singleton: true
       end
@@ -157,7 +146,7 @@ RSpec.describe "Matterhorn::Links" do
     end
 
     it "should accept 'nested' option" do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         belongs_to :author
         add_link   :author, nested: true
       end
@@ -169,7 +158,6 @@ RSpec.describe "Matterhorn::Links" do
   end
 
   context "provided link types" do
-    include ClassBuilder
     include UrlTestHelpers
     include SerialSpec::ItExpects
 
@@ -178,7 +166,7 @@ RSpec.describe "Matterhorn::Links" do
       let(:article) { article_class.create author: author}
 
       let!(:article_class) do
-        define_class(:Article, base_class) do
+        define_model(:Article) do
           belongs_to :author
           add_link   :author
         end
@@ -230,7 +218,7 @@ RSpec.describe "Matterhorn::Links" do
       let(:author)    { Author.create article: article }
 
       let!(:article_class) do
-        define_class(:Article, base_class) do
+        define_model(:Article) do
           has_one  :author
           add_link :author,
             nested: true

@@ -21,4 +21,15 @@ module ClassBuilder
       klass.class_eval(&block) if block_given?
     end
   end
+
+  def base_class
+    @base_class ||= define_class(:BaseKlass) do
+      include Mongoid::Document
+      include Matterhorn::Links::LinkSupport
+    end
+  end
+
+  def define_model(class_name, &block)
+    define_class class_name, base_class, &block
+  end
 end

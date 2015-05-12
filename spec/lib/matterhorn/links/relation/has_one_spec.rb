@@ -12,15 +12,8 @@ RSpec.describe "Matterhorn::Links::Relation::HasOne" do
     resources :authors
   end
 
-  let(:base_class) do
-    define_class(:BaseKlass) do
-      include Mongoid::Document
-      include Matterhorn::Links::LinkSupport
-    end
-  end
-
   let!(:article_class) do
-    define_class(:Article, base_class) do
+    define_model(:Article) do
       has_one    :author
       add_link   :author,
         nested: true
@@ -28,9 +21,7 @@ RSpec.describe "Matterhorn::Links::Relation::HasOne" do
   end
 
   let!(:author_class) do
-    define_class(:Author, base_class) do
-      include Mongoid::Document
-
+    define_model(:Author) do
       belongs_to :article
       field :name
     end
@@ -59,7 +50,7 @@ RSpec.describe "Matterhorn::Links::Relation::HasOne" do
   context "when not nested" do
 
     let!(:article_class) do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         has_one    :author
         add_link   :author,
           nested: false
@@ -117,7 +108,7 @@ RSpec.describe "Matterhorn::Links::Relation::HasOne" do
     end
 
     let!(:article_class) do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         has_one    :author
         add_link   :author,
           nested: true
@@ -151,7 +142,7 @@ RSpec.describe "Matterhorn::Links::Relation::HasOne" do
     end
 
     let!(:article_class) do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         has_one  :author
         add_link :author,
           nested: true
@@ -189,7 +180,7 @@ RSpec.describe "Matterhorn::Links::Relation::HasOne" do
     end
 
     let!(:article_class) do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         has_many :authors
         add_link :author,
           relation_name: :authors,

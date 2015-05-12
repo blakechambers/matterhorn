@@ -12,24 +12,15 @@ RSpec.describe "Matterhorn::Links::Relation::BelongsTo" do
     resources :authors
   end
 
-  let(:base_class) do
-    define_class(:BaseKlass) do
-      include Mongoid::Document
-      include Matterhorn::Links::LinkSupport
-    end
-  end
-
   let!(:article_class) do
-    define_class(:Article, base_class) do
+    define_model(:Article) do
       belongs_to :author
       add_link   :author
     end
   end
 
   let!(:author_class) do
-    define_class(:Author, base_class) do
-      include Mongoid::Document
-
+    define_model(:Author) do
       field :name
     end
   end
@@ -77,16 +68,14 @@ RSpec.describe "Matterhorn::Links::Relation::BelongsTo" do
 
   context "when relation is polymorphic" do
     let!(:article_class) do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         belongs_to :author, polymorphic: true
         add_link   :author
       end
     end
 
     let!(:bot_class) do
-      define_class(:Bot, base_class) do
-        include Mongoid::Document
-
+      define_model(:Bot) do
         field :name
       end
     end
@@ -118,7 +107,7 @@ RSpec.describe "Matterhorn::Links::Relation::BelongsTo" do
     end
 
     let!(:article_class) do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         belongs_to :author
         add_link   :author,
           nested: true
@@ -148,7 +137,7 @@ RSpec.describe "Matterhorn::Links::Relation::BelongsTo" do
     end
 
     let!(:article_class) do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         belongs_to :author
         add_link   :author,
           nested: true
@@ -220,7 +209,7 @@ RSpec.describe "Matterhorn::Links::Relation::BelongsTo" do
       it "should call scope and return a enumerator of items matching the scope" do
         expect(scope_double).to receive(:in).once.and_return([author])
         result = set_member.find(resource_array)
-        
+
         expect(result).to include(author)
       end
 

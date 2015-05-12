@@ -10,23 +10,15 @@ RSpec.describe "Matterhorn::Serialization::ScopedResourceSerializer" do
     resources :authors
   end
 
-  let(:base_class) do
-    define_class(:BaseKlass) do
-      include Mongoid::Document
-      include Matterhorn::Links::LinkSupport
-    end
-  end
-
   let!(:article_class) do
-    define_class(:Article,base_class) do
+    define_model(:Article) do
       belongs_to :author
       add_link   :author
     end
   end
 
   let!(:author_class) do
-    define_class(:Author) do
-      include Mongoid::Document
+    define_model(:Author) do
       field :name
     end
   end
@@ -50,7 +42,7 @@ RSpec.describe "Matterhorn::Serialization::ScopedResourceSerializer" do
 
   subject { serializer }
 
-  it "should have top level type" do 
+  it "should have top level type" do
     expect(body[:data][:type].execute).to eq("articles")
   end
 

@@ -10,15 +10,8 @@ RSpec.describe "Matterhorn::Serialization::BaseSerializer" do
     resources :authors
   end
 
-  let(:base_class) do
-    define_class(:BaseKlass) do
-      include Mongoid::Document
-      include Matterhorn::Links::LinkSupport
-    end
-  end
-
   let!(:article_class) do
-    define_class(:Article,base_class) do
+    define_model(:Article) do
       belongs_to :author
       add_link   :author
     end

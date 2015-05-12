@@ -12,15 +12,8 @@ RSpec.describe "Matterhorn::Links::Relation::HasAndBelongsToMany" do
     resources :authors
   end
 
-  let(:base_class) do
-    define_class(:BaseKlass) do
-      include Mongoid::Document
-      include Matterhorn::Links::LinkSupport
-    end
-  end
-
   let!(:article_class) do
-    define_class(:Article, base_class) do
+    define_model(:Article) do
       has_and_belongs_to_many   :authors
       add_link   :authors,
         nested: true
@@ -59,10 +52,10 @@ RSpec.describe "Matterhorn::Links::Relation::HasAndBelongsToMany" do
   context "when not nested" do
 
     let!(:article_class) do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         has_and_belongs_to_many   :authors
         add_link   :authors,
-          nested: false 
+          nested: false
       end
     end
 
@@ -80,7 +73,7 @@ RSpec.describe "Matterhorn::Links::Relation::HasAndBelongsToMany" do
     end
 
     let!(:article_class) do
-      define_class(:Article, base_class) do
+      define_model(:Article) do
         has_and_belongs_to_many   :authors
         add_link   :authors,
           nested: true
@@ -132,11 +125,10 @@ RSpec.describe "Matterhorn::Links::Relation::HasAndBelongsToMany" do
       end
 
       let!(:article_class) do
-        klass = define_class(:Article, base_class) do
-
+        klass = define_model(:Article) do
           has_and_belongs_to_many :authors
         end
-
+        
         klass.send :add_link, :authors, scope: scope, nested: true
         klass
       end
@@ -144,7 +136,7 @@ RSpec.describe "Matterhorn::Links::Relation::HasAndBelongsToMany" do
       it "should call scope and return a enumerator of items matching the scope" do
         expect(scope_double).to receive(:in).once.and_return([author])
         result = set_member.find(resource_array)
-        
+
         expect(result).to include(author)
       end
 
