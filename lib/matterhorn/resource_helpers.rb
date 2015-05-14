@@ -72,15 +72,15 @@ module Matterhorn
         if is_singleton?
           singleton_permitted_params
         else
-          params.require(resource_name).permit(allowed_resource_params.to_a)
+          params.require(:data).permit(allowed_resource_params.to_a)
         end
       end
 
       def singleton_permitted_params
         parent_key = symbols_for_association_chain[-1]
-        singleton_params = [resource_name => allowed_resource_params.to_a]
-        association_hash = {resources_configuration[parent_key][:param] => params[resources_configuration[parent_key][:param]]}
-        params.require(parent_key).permit(singleton_params.to_a)[resource_name].merge(association_hash)
+        # singleton_params = [data: allowed_resource_params.to_a]
+        # association_hash = {resources_configuration[parent_key][:param] => params[resources_configuration[parent_key][:param]]}
+        params.require(:data).permit(allowed_resource_params.to_a)
       end
 
       def collection_scope

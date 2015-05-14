@@ -9,7 +9,7 @@ RSpec.describe "update" do
   resource_class  Post
 
   request_path { "/#{collection_name}/#{existing_resource.id}.json" }
-  let!(:params) { request_params.merge! resource_name => resource_params }
+  let!(:params) { request_params.merge! data: resource_params }
 
   let(:existing_resource) { Post.make!(body: "body") }
   let(:resource_params)   { { body: "new body" } }
@@ -23,27 +23,26 @@ RSpec.describe "update" do
   ie(:db_changed)    { expect(existing_resource.reload.body).to eq("new body") }
 
   context "resources!" do
-    with_request "PATCH /#{collection_name}/:id.json"
-    with_request "PUT   /#{collection_name}/:id.json"
+    # with_request "PATCH /#{collection_name}/:id.json"
+    # with_request "PUT   /#{collection_name}/:id.json"
   end
 
   context "resource!" do
-    # resource_name   "topic"
-    # resource_class  Topic
-    # 
+    resource_name   "topic"
+    resource_class  Topic
     request_path { "/#{collection_name}/#{existing_parent.id}/topic.json" }
 
-    let(:existing_resource) { Topic.make!(post: existing_parent) }
-    let(:existing_parent)   { Post.make! }
-    let(:resource_params)   { { topic: { name: "new name" } } }
+    let!(:existing_resource) { Topic.make! }
+    let(:existing_parent)    { Post.make! topic: existing_resource }
 
-    # TODO:
-    # This is failing because of the misconfigured resource params here, the
-    # resource should receive just a hash with topic as the parent, but its
-    # currently nested under the parent resources name (i.e. posts/topics/name)
-    #
-    xit(:db_changed) { expect(existing_resource.reload.name).to eq("new name") }
-    ie(:db_changed)  { "cannot verify the file is created for the moment, see above comment" }
+    before do
+      # this is a little complicated by the HABTM relationships.
+      @topic = Topic.make!
+    end
+
+    let(:resource_params)   { { name: "new name" } }
+
+    ie(:db_changed) { expect(existing_resource.reload.name).to eq("new name") }
 
     with_request "PUT   /#{collection_name}/:id/topic.json"
     with_request "PATCH /#{collection_name}/:id/topic.json"

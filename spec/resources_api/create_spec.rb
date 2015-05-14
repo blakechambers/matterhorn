@@ -9,7 +9,7 @@ RSpec.describe "create" do
   resource_class Post
   resource_scope Post.first
 
-  let!(:params) { request_params.merge!(resource_name => resource_params) }
+  let!(:params) { request_params.merge!("data" => resource_params) }
   let(:resource_params) { valid_params }
   let(:valid_params) do
     {

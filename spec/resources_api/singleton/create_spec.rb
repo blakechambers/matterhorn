@@ -14,13 +14,7 @@ RSpec.describe "create singleton" do
 
   let(:valid_params) do
     {
-      "#{resource_name}" =>
-      {
-        topic:
-        {
-          name: topic_name
-        }
-      }
+      data: { name: topic_name }
     }
   end
 
