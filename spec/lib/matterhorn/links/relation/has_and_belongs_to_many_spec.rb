@@ -80,11 +80,11 @@ RSpec.describe "Matterhorn::Links::Relation::HasAndBelongsToMany" do
       end
     end
 
-    context "when context: criteria" do
-      let(:link_context) { article_class.all }
-
-      it { expect(url).to eq("http://example.org/articles/{articles._id}/authors") }
-    end
+    # context "when context: criteria" do
+    #   let(:link_context) { article_class.all }
+    #
+    #   it { expect(url).to eq("http://example.org/articles/{articles._id}/authors") }
+    # end
 
     context "when context: model" do
       let(:link_context) { article }
@@ -128,7 +128,7 @@ RSpec.describe "Matterhorn::Links::Relation::HasAndBelongsToMany" do
         klass = define_model(:Article) do
           has_and_belongs_to_many :authors
         end
-        
+
         klass.send :add_link, :authors, scope: scope, nested: true
         klass
       end

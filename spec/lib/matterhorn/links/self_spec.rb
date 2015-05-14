@@ -46,8 +46,8 @@ RSpec.describe "Matterhorn::Links::Self" do
     context "when context: criteria" do
       let(:link_context) { Article.all }
 
-      it { expect(url).to eq("http://example.org/articles/{articles._id}") }
-      it { expect(serialized).to eq("http://example.org/articles/{articles._id}") }
+      it { expect(url).to eq("http://example.org/articles") }
+      it { expect(serialized).to eq("http://example.org/articles") }
     end
 
   end

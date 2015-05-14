@@ -119,7 +119,7 @@ RSpec.describe "Matterhorn::Links::Relation::HasOne" do
     context "when context: criteria" do
       let(:link_context) { article_class.all }
 
-      it { expect(url).to eq("http://example.org/articles/{articles._id}/mentions") }
+      it { expect(url).to eq("http://example.org/articles/#{article._id}/mentions") }
     end
 
     context "when context: model" do

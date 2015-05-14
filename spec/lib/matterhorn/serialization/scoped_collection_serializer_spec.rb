@@ -47,7 +47,7 @@ RSpec.describe "Matterhorn::Serialization::ScopedCollectionSerializer" do
   subject { serializer }
 
   it "should have top level self link" do
-    expect(body[:links][:self].execute).to eq("http://example.org/articles/{articles._id}")
+    expect(body[:links][:self].execute).to eq("http://example.org/articles")
   end
 
   it "should have author top level" do
@@ -83,7 +83,7 @@ RSpec.describe "Matterhorn::Serialization::ScopedCollectionSerializer" do
       article = article_class.create! author: author
 
       included = body[:includes].first
-      
+
       expect(included[:id].execute).to   eq(author.id.to_s)
       expect(included[:type].execute).to eq("authors")
     end

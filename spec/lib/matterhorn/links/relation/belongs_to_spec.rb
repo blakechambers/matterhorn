@@ -52,8 +52,8 @@ RSpec.describe "Matterhorn::Links::Relation::BelongsTo" do
     context "when context: criteria" do
       let(:link_context) { Article.all }
 
-      it { expect(url).to eq("http://example.org/authors/{articles.author_id}") }
-      it { expect(serialized).to eq("http://example.org/authors/{articles.author_id}") }
+      it { expect(url).to eq("http://example.org/authors") }
+      it { expect(serialized).to eq("http://example.org/authors") }
     end
 
     context "when context: model" do
@@ -100,12 +100,6 @@ RSpec.describe "Matterhorn::Links::Relation::BelongsTo" do
 
   context "when nested" do
 
-    routes_config do
-      resources :articles do
-        resource :author
-      end
-    end
-
     let!(:article_class) do
       define_model(:Article) do
         belongs_to :author
@@ -114,10 +108,16 @@ RSpec.describe "Matterhorn::Links::Relation::BelongsTo" do
       end
     end
 
-    context "when context: criteria" do
-      let(:link_context) { article_class.all }
+    routes_config do
+      resources :articles do
+        resource :author
+      end
+    end
 
-      it { expect(url).to eq("http://example.org/articles/{articles._id}/author") }
+    context "when context: criteria" do
+      let(:link_context) { article ; article_class.all }
+
+      it { expect(url).to eq("http://example.org/articles/#{article._id}/author") }
     end
 
     context "when context: model" do
@@ -156,7 +156,7 @@ RSpec.describe "Matterhorn::Links::Relation::BelongsTo" do
 
     context 'when criteria' do
       let(:link_context) { article_class.all }
-      it { expect(serialized).to eq("http://example.org/authors/{articles.author_id}") }
+      it { expect(serialized).to eq("http://example.org/authors") }
     end
 
     context 'when resource is invalid' do

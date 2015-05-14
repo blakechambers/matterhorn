@@ -38,7 +38,51 @@ module Matterhorn
           METHOD
         end
       end
-      
+
     end
+
+    # generates a collection url from resource or criteria
+    class CollectionURI
+      extend ActiveModel::Naming
+
+      def initialize(obj, field="_id")
+        @obj   = obj
+        @field = field
+      end
+
+      def self.for(obj)
+        build_for(obj).new(obj)
+      end
+
+      def to_param
+        @obj.kind_of?(Mongoid::Criteria) ? collection_to_param : @obj.to_param
+      end
+
+      def collection_to_param
+        raise ArgumentError, "must be a collection" unless @obj.kind_of?(Mongoid::Criteria)
+
+        @obj.pluck(:_id).join(",")
+      end
+
+      def persisted?
+        false
+      end
+
+      def to_model
+        self
+      end
+
+      def self.build_for(obj)
+        Class.new(CollectionURI).tap do |klass|
+          klass.module_eval <<-METHOD
+            def self.name
+              "#{Matterhorn::Serialization.classify_name(obj).name}"
+            end
+          METHOD
+        end
+      end
+
+    end
+
   end
 end

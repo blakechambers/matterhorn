@@ -47,7 +47,7 @@ RSpec.describe "Matterhorn::Serialization::ScopedResourceSerializer" do
   end
 
   it "should have top level self link" do
-    expect(body[:links][:self].execute).to eq("http://example.org/articles/{articles._id}")
+    expect(body[:links][:self].execute).to eq("http://example.org/articles")
   end
 
   it "should have author top level" do

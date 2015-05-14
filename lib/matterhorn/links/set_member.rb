@@ -39,7 +39,7 @@ module Matterhorn
       end
 
       def template_for(resource)
-        Serialization::URITemplate.for(resource, @template_key.call(resource))
+        UrlHelper::CollectionURI.for(resource)
       end
 
       def with_matterhorn_resource_opts(resource, opts)

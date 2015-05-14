@@ -115,11 +115,11 @@ RSpec.describe "Matterhorn::Links::Relation::HasOne" do
       end
     end
 
-    context "when context: criteria" do
-      let(:link_context) { article_class.all }
-
-      it { expect(url).to eq("http://example.org/articles/{articles._id}/author") }
-    end
+    # context "when context: criteria" do
+    #   let(:link_context) { article_class.all }
+    #
+    #   it { expect(url).to eq("http://example.org/articles/{articles._id}/author") }
+    # end
 
     context "when context: model" do
       let(:link_context) { article }
@@ -193,7 +193,8 @@ RSpec.describe "Matterhorn::Links::Relation::HasOne" do
     context "when context: criteria" do
       let(:link_context) { article_class.all }
 
-      it { expect(url).to eq("http://example.org/articles/{articles._id}/author") }
+
+      it { expect(url).to eq("http://example.org/articles/#{article._id}/author") }
 
       it "should return a enumerator of items matching the scope" do
         result = set_member.find(resource_array)

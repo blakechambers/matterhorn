@@ -112,7 +112,7 @@ RSpec.describe "index" do
         expect(data).to provide(ordered_posts[2..3])
       end
 
-      xit "should provide a self link" do
+      it "should provide a self link" do
         request_params.merge! limit: "1"
         perform_request!
         expect(body[:links][:self].execute).to eq("http://example.org/posts?limit=1")
@@ -138,7 +138,7 @@ RSpec.describe "index" do
                          resource_class.make!(created_at: Time.zone.now - 1000)
                        ]}
 
-      xit "should order by provided params" do
+      it "should order by provided params" do
         request_params.merge! order: "oldest"
         perform_request!
 
