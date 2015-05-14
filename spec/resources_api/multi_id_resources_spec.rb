@@ -49,7 +49,7 @@ RSpec.describe "multi ids resources" do
   let(:comments) { Comment.in(post: post_ids) }
   let(:other_comments) { Comment.in(post: other_post_ids) }
 
-  context 'with_request "GET /#[collection_name}/:id1,:id3.json"' do
+  context 'with_request "GET /#{collection_name}/:id1,:id3.json"' do
 
     it "should return a collection of resources with ids requests" do
       request_method "GET"

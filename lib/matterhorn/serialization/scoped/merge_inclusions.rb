@@ -22,13 +22,24 @@ module Matterhorn
           items = [serialized_object].flatten
           resources_array = [object].flatten
 
-          links.each do |pair|
-            name, member = *pair
-            
-            if member.respond_to?(:includable?) and
-               member.includable? and
-               requested_includes.include?(name.to_s)
-              results.concat member.find(resources_array).to_a
+          items_sets = resources_array.inject(Hash.new) do |klasses, x|
+            klasses[x.class] ||= []
+            klasses[x.class] << x
+            klasses
+          end
+
+          items_sets.each do |klass, items|
+            next unless items.first.respond_to?(:links)
+
+            items.first.links(request_env: request_env).each do |pair|
+              name, member = *pair
+
+              if member.respond_to?(:includable?) and
+                 member.includable? and
+                 requested_includes.include?(name.to_s)
+
+                results.concat member.find(items).to_a
+              end
             end
           end
 

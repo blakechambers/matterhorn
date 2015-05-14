@@ -64,7 +64,7 @@ module Matterhorn
             opts.append(request_env[:collection_params].clone)
           end
         end
-         
+
         opts
       end
 

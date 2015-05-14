@@ -17,9 +17,9 @@ RSpec.describe "index" do
   ie(:content_type)    { expect(headers["Content-Type"]).to include(Matterhorn::CONTENT_TYPE) }
   ie(:utf8)            { expect(headers["Content-Type"]).to include("charset=utf-8") }
   ie(:collection_body) { expect(data.execute).to be_an(Array) }
-  #ie(:link_vote)       { expect(body[:links][:votes].execute).to eq("http://example.org/posts/{posts.id}/vote") }
-  #ie(:link_author)     { expect(body[:links][:author].execute).to eq("http://example.org/users/{posts.authorid}") }
-  #ie(:link_comments)   { expect(body[:links][:initial_comments].execute).to eq("http://example.org/comments/{posts.initial_commentsids}") }
+  ie(:link_vote)       { expect(body[:links][:votes].execute).to eq(nil) }
+  ie(:link_author)     { expect(body[:links][:author].execute).to eq(nil) }
+  ie(:link_comments)   { expect(body[:links][:initial_comments].execute).to eq(nil) }
 
   with_request "GET /#{collection_name}.json" do
 
@@ -67,14 +67,17 @@ RSpec.describe "index" do
       let(:post)        { Post.make! author: current_user }
 
       it "should included scoped votes" do
+        # pending "INCLUDES"
+
         request_params.merge! include: "vote"
         perform_request!
-
 
         expect(body[:includes]).to include_a_provided(users_vote)
       end
 
       it "should include scoped authors" do
+        # pending "INCLUDES"
+
         request_params.merge! include: "author"
         perform_request!
 

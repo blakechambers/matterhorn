@@ -37,8 +37,8 @@ RSpec.describe "show" do
     it "should list provided inclusions" do
       perform_request!
 
-      expect(body[:links][:vote].execute).to eq("http://example.org/posts/{posts._id}/vote")
-      expect(body[:links][:author].execute).to eq("http://example.org/users/{posts.author_id}")
+      expect(body[:links][:vote].execute).to eq(nil)
+      expect(body[:links][:author].execute).to eq(nil)
     end
 
     context "when defining a custom scope" do

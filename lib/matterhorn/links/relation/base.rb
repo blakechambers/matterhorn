@@ -19,16 +19,6 @@ module Matterhorn
           @scope_class ||= (metadata || context).klass
         end
 
-        # TODO: can this be removed?
-        def link_resource_name
-          l_name = relation_name || name
-          if config.singleton
-            l_name.to_s.singularize.to_sym
-          else
-            l_name
-          end
-        end
-
         def url_options(resource)
           opts = super(resource)
           if config.nested

@@ -25,11 +25,6 @@ RSpec.describe "Matterhorn::Links" do
     include ClassBuilder
     include UrlTestHelpers
     include SerialSpec::ItExpects
-    #
-    # routes_config do
-    #   resources :articles
-    #   resources :authors
-    # end
 
     let!(:article_class) do
       define_model(:Article) do
