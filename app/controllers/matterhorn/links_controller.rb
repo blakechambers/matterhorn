@@ -23,7 +23,7 @@ module Matterhorn
     end
 
     def resource
-      parent.links[link_name]
+      parent.links[link_name] || raise(Matterhorn::Errors::ResourceNotFound)
     end
 
   end

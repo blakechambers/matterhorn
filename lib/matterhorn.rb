@@ -45,6 +45,8 @@ module Matterhorn
     def get_status_from_exception(ex)
       case ex
         when ::ActionController::UnknownFormat then 406
+        when Errors::ResourceNotFound          then 404
+
         else
           DEFAULT_ERROR_CODE
       end

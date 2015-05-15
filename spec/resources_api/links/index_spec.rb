@@ -9,6 +9,7 @@ RSpec.describe "links" do
   resource_name "post"
   resource_class Post
   resource_scope Post.first
+
   let!(:user) { User.make! }
   let!(:resource) { resource_class.make!(author: user) }
   let!(:comments) do
@@ -25,12 +26,14 @@ RSpec.describe "links" do
     with_request "GET /#{collection_name}/:id/links/foo.json" do
       request_path { "/#{collection_name}/#{resource.id}/links/foo.json" }
 
+      ie(:resource_body)   { expect(data.execute).to eq(nil) }
+
       its_status_should_be 404
     end
   end
 
   context "belongs_to" do
-    with_request "GET /#{collection_name}/:id/links/user.json" do
+    with_request "GET /#{collection_name}/:id/links/author.json" do
       request_path { "/#{collection_name}/#{resource.id}/links/author.json" }
 
       its_status_should_be 200
@@ -62,7 +65,8 @@ RSpec.describe "links" do
 
       it "should provide data section" do
         perform_request!
-         expect(data).to provide_linked(resource.topic)
+        
+        expect(data).to provide_linked(resource.topic)
       end
     end
 
