@@ -6,7 +6,6 @@ I think some of this is due to mis-information on how top-level links are intend
 
 While this is a big architectural change to the library, the testing put in place by the links refactor work should help keep it manageable.  
 
-
 ## Strategy
 
 General:
