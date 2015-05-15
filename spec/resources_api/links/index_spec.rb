@@ -21,6 +21,14 @@ RSpec.describe "links" do
   ie(:utf8)            { expect(headers["Content-Type"]).to include("charset=utf-8") }
   ie(:resource_body)   { expect(data.execute).to be_a(Hash) }
 
+  context "link does not exist" do
+    with_request "GET /#{collection_name}/:id/links/foo.json" do
+      request_path { "/#{collection_name}/#{resource.id}/links/foo.json" }
+
+      its_status_should_be 404
+    end
+  end
+
   context "belongs_to" do
     with_request "GET /#{collection_name}/:id/links/user.json" do
       request_path { "/#{collection_name}/#{resource.id}/links/author.json" }
