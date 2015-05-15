@@ -15,7 +15,6 @@ General:
 - [x] [#65][65] - `ID_FIELD` should be changed to "id".
 - [x] [#66][66] - Remove Top-level relation links will no longer contain model relation links.
 - [x] [#67][67] - Foreign keys for associations should not be required.
-- [ ] Linkage keys can only contain "type" and "id".  It should be impossible to create a non unique pairing (not sure how to enforce that better).
 - [x] When serializing "related" links, the links should always be provided.
 - [x] [#73][73] - Set return Content-Type to `application/vnd.api+json`
 - [x] [#68][68] - Add [`belongs_to_many`](#belongs_to_many)
