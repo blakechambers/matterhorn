@@ -44,15 +44,17 @@ RSpec.describe "show" do
         perform_request!
 
         expect(body[:includes].execute.count).to eq(1)
-        expect(body[:includes].first[:id].execute).to eq(users_votes.id.to_s)
+        # expect(body[:includes].first[:id].execute).to eq(users_votes.id.to_s)
+        expect(body[:includes]).to include_a_provided(users_votes)
       end
 
       it "should include scoped users" do
-        request_params.merge! include: "user"
+        request_params.merge! include: "author"
         perform_request!
 
         expect(body[:includes].execute.count).to eq(1)
-        expect(body[:includes].first[:id].execute).to eq(resource.user_id.to_s)
+        # expect(body[:includes].first[:id].execute).to eq(resource.user_id.to_s)
+        expect(body[:includes]).to include_a_provided(resource.author)
       end
 
       it "should provide complete links" do
@@ -62,12 +64,12 @@ RSpec.describe "show" do
         # TODO: this should be swapped to use a nested route, e.g. http://example.org/posts/{posts._id}/votes
         # TODO: this is wrong these are appearing under "data/links" should be at the top level "links"
         vote_linkage      = {"linkage"=>{"post_id"=> resource.id.to_s, "type"=>"votes"}, "related"=>"http://example.org/posts/#{resource.id.to_s}/vote"}
-        user_linkage    = {"linkage"=>{"id"=>resource.user_id.to_s, "type"=>"users"}, "related"=>"http://example.org/posts/#{resource.id.to_s}/user"}
+        user_linkage    = {"linkage"=>{"id"=>resource.author_id.to_s, "type"=>"users"}, "related"=>"http://example.org/users/#{resource.author_id.to_s}"}
         comments_linkage  = {"linkage"=>{"post_id"=> resource.id.to_s, "type"=>"comments"}, "related"=>"http://example.org/posts/#{resource.id.to_s}/comments"}
         topic_linkage     = {"linkage"=> {"post_id"=> resource.id.to_s, "type"=>"topics"}, "related"=>"http://example.org/posts/#{resource.id.to_s}/topic"}
 
         expect(links[:vote].execute).to     eq(vote_linkage)
-        expect(links[:user].execute).to   eq(user_linkage)
+        expect(links[:author].execute).to   eq(user_linkage)
         expect(links[:comments].execute).to eq(comments_linkage)
         expect(links[:topic].execute).to    eq(topic_linkage)
         # expect(links[:initial_comments].execute).to eq({"linkage"=>{"id"=>"1,2,3", "type"=>"comments"}, "related"=>"http://example.org/comments/1,2,3"})

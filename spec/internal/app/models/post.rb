@@ -7,7 +7,7 @@ class Post
   field :body
   field :initial_comments_ids, type: Array
 
-  belongs_to :user
+  belongs_to :author, class_name: "User"
 
   has_many :comments
   has_one  :topic
@@ -18,8 +18,7 @@ class Post
     env[:current_user].votes.all
   end
 
-  add_link :user,
-    nested: true
+  add_link :author
 
   add_link :comments,
     nested: true
@@ -40,6 +39,6 @@ class Post
 
   validates_presence_of :body
 
-  accepts_nested_attributes_for :user, :topic
+  accepts_nested_attributes_for :author, :topic
 
 end

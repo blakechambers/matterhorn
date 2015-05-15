@@ -1,4 +1,4 @@
-class UsersController < Matterhorn::Base
+class AuthorsController < Matterhorn::Base
   include Matterhorn::Resources
   include FakeAuth
 

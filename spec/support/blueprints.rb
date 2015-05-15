@@ -9,9 +9,8 @@ end
 
 
 Post.blueprint do
-  user  { User.make! }
+  author  { User.make! }
   body    { "body" }
-  # title   { "title" }
   topic   { Topic.make! }
 end
 

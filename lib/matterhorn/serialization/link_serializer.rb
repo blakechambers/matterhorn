@@ -2,6 +2,20 @@ require "matterhorn/serialization/scoped"
 
 module Matterhorn
   module Serialization
+
+    class LinkResourceSerializer < ActiveModel::Serializer
+      attributes :id, :type
+      # def include__id?
+      #   false
+      # end
+      def id
+        object._id.to_s
+      end
+      def type
+        object.class.to_s.underscore.pluralize
+      end
+    end
+
     class LinkSerializer
 
       extend Forwardable
@@ -20,7 +34,7 @@ module Matterhorn
 
       end
 
-      def serializable_hash 
+      def serializable_hash
         top_level_links.merge!(data_links)
       end
 
@@ -37,11 +51,11 @@ module Matterhorn
 
         resources_array = [object.context].flatten
 
-        scope = 
+        scope =
           case object.config.type
           when :belongs_to
             object.find(resources_array).first
-          when :has_many    
+          when :has_many
             object.find(resources_array)
           when :has_one
             object.find(resources_array).first
@@ -63,18 +77,6 @@ module Matterhorn
         request_env[:url_builder]
       end
 
-      class LinkResourceSerializer < ActiveModel::Serializer
-        attributes :id, :type
-        def include__id?
-          false
-        end
-        def id
-          object._id.to_s
-        end
-        def type
-          object.class.to_s.underscore.pluralize
-        end
-      end
     end
   end
 end

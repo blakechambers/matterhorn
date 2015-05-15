@@ -26,6 +26,10 @@ module ApiExampleSet
     serializer.new(obj, options.merge!(request_env: request_env))
   end
 
+  def provide_linked(obj)
+    provide(obj, as: Matterhorn::Serialization::LinkResourceSerializer)
+  end
+
   def app
     Rails.application
   end

@@ -41,9 +41,6 @@ RSpec.describe "index" do
 
       its_status_should_be 406
       ie(:collection_body) { "do nothing" }
-      ie(:link_vote)       { "do nothing" }
-      ie(:link_user)     { "do nothing" }
-      ie(:link_comments)   { "do nothing" }
 
       perform_request!
 
@@ -61,11 +58,9 @@ RSpec.describe "index" do
 
       let!(:users_vote) { Vote.make! user: current_user, post: post }
       let!(:other_vote) { Vote.make! post: post }
-      let(:post)        { Post.make! user: current_user }
+      let(:post)        { Post.make! author: current_user }
 
       it "should included scoped votes" do
-        # pending "INCLUDES"
-
         request_params.merge! include: "vote"
         perform_request!
 

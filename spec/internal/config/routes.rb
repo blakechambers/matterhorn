@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :posts do
-    resource  :user
+    resource  :author
     resource  :topic
     resource  :vote
     resources :comments
@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :comments
   resources :tags
   resources :topics
-  resources :users
+  resources :authors
   resources :votes
+  resources :users
 end
