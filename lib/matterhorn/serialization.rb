@@ -51,6 +51,23 @@ module Matterhorn
         @options[:request_env]
       end
 
+      def attributes
+        _fast_attributes
+        rescue NameError
+          method = "def _fast_attributes\n"
+          method << "  h = {}\n"
+          method << "  h['attributes'] = {}\n"
+          _attributes.each do |name,key|
+            if key.in? [:id, :type, :links, :relationships]
+              method << "  h[:\"#{key}\"] = read_attribute_for_serialization(:\"#{name}\") if include?(:\"#{name}\")\n"
+            else
+              method << "  h['attributes'][:\"#{key}\"] = read_attribute_for_serialization(:\"#{name}\") if include?(:\"#{name}\")\n"
+            end
+          end
+          method << "  h\nend"
+          self.class.class_eval method
+          _fast_attributes
+      end
     end
 
     class LinkSetSerializer
