@@ -33,13 +33,19 @@ module Matterhorn
         object.respond_to?(:__link_configs) ? object.__link_configs : Hash.new
       end
 
+      def include_self_link?
+        true
+      end
+
       def links
         link_set_options = { context: object, request_env: request_env }
         model_links = Links::LinkSet.new(object_link_config, link_set_options)
-        self_config= Links::LinkConfig.new(nil, :self, type: :self)
-        self_links = Links::LinkSet.new({self: self_config}, link_set_options)
 
-        model_links.merge!(self_links.config)
+        if include_self_link?
+          self_config= Links::LinkConfig.new(nil, :self, type: :self)
+          self_links = Links::LinkSet.new({self: self_config}, link_set_options)
+          model_links.merge!(self_links.config)
+        end
 
         model_links.set_inclusion
 
