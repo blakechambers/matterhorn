@@ -47,6 +47,10 @@ RSpec.describe "Matterhorn::Serialization::BaseSerializer" do
     expect(serialized_article).to be_a_kind_of(Hash)
   end
 
+  it "should wrap attributes inside an attributes hash" do
+    expect(serialized_article["attributes"]).to eq({:_id => article.id, :author_id => author.id })
+  end
+
   it "should include links[self] reference" do
     expect(body[:links].execute).to be_kind_of(Hash)
     expect(body[:links][:self].execute).to eq(url_builder.article_url(article))
