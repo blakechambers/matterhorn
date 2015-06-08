@@ -43,7 +43,6 @@ module Matterhorn
         if include_self_link?
           self_config= Links::LinkConfig.new(nil, :self, type: :self)
           self_links = Links::LinkSet.new({self: self_config}, link_set_options)
-          self_links.set_inclusion
           link_set_serializer = LinkSetSerializer.new(self_links, context: object)
           link_set_serializer.serializable_hash
         else
@@ -54,7 +53,6 @@ module Matterhorn
       def relationships
         link_set_options = { context: object, request_env: request_env }
         model_links = Links::LinkSet.new(object_link_config, link_set_options)
-        model_links.set_inclusion
         link_set_serializer = LinkSetSerializer.new(model_links, context: object)
         link_set_serializer.serializable_hash
       end
