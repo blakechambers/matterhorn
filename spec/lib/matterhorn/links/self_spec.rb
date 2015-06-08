@@ -50,5 +50,13 @@ RSpec.describe "Matterhorn::Links::Self" do
       it { expect(serialized).to eq("http://example.org/articles") }
     end
 
+    context "when context: object" do
+      let(:link_context) { Article.first }
+
+      it { expect(url).to eq("http://example.org/articles/#{link_context.id}") }
+      it { expect(serialized).to eq("http://example.org/articles/#{link_context.id}") }
+
+    end
+
   end
 end

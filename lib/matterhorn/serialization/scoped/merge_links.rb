@@ -14,8 +14,7 @@ module Matterhorn
       protected ################################################################
 
         def merge_links!(hash)
-          criteria = object.kind_of?(Mongoid::Document) ? object.class.where(id: object._id) : object
-          link_set_serializer = LinkSetSerializer.new(links, context: criteria)
+          link_set_serializer = LinkSetSerializer.new(links, context: object)
 
           hash["links"] = link_set_serializer.serializable_hash
 
