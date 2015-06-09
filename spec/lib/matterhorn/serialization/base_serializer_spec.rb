@@ -57,7 +57,7 @@ RSpec.describe "Matterhorn::Serialization::BaseSerializer" do
   end
 
   it "should serialize links specified in model" do
-    relation = body[:links][:author]
+    relation = body[:relationships][:author]
 
     expect(relation[:related].execute).to        eq(url_builder.author_url(author))
     expect(relation[:linkage][:id].execute).to   eq(author._id.to_s)
