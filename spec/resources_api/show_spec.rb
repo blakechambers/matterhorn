@@ -30,8 +30,7 @@ RSpec.describe "show" do
       request_params.merge! include: "user"
       perform_request!
 
-      expect(body[:links].execute).to be_kind_of(Hash)
-      expect(body[:links].execute).to be_kind_of(Hash)
+      expect(data[:links].execute).to be_kind_of(Hash)
     end
 
     context "when defining a custom scope" do

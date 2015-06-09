@@ -4,6 +4,7 @@ module Matterhorn
   module Serialization
     class ScopedCollectionSerializer < ScopedBase
       include Scoped
+      include Serialization::Scoped::MergeLinks
 
       def order_config
         options[:order_config]

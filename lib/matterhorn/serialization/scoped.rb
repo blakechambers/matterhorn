@@ -6,7 +6,6 @@ module Matterhorn
 
     module Scoped
       extend  ActiveSupport::Concern
-      include Serialization::Scoped::MergeLinks
       include Serialization::Scoped::MergeInclusions
     end
 
