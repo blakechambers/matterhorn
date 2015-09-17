@@ -181,6 +181,7 @@ module Matterhorn
       when Mongoid::Criteria then obj.klass
       when Mongoid::Document then obj.class
       when Class             then obj
+      when Origin::Queryable then obj.klass
       else
         raise ArgumentError, "unable to classify: #{obj.inspect}"
       end

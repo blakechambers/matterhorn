@@ -55,6 +55,7 @@ module Matterhorn
         opts = case resource
         when Mongoid::Document then resource_url_options(resource)
         when Mongoid::Criteria then scope_url_options(resource)
+        when Origin::Queryable then resource_url_options(resource) 
         else
           raise "Could not decide how to build association from #{resource.inspect}"
         end
@@ -97,6 +98,7 @@ module Matterhorn
         when Mongoid::Document         then serialize_resource(resource)
         when Mongoid::Criteria         then serialize_collection(resource)
         when Mongoid::Relations::Proxy then serialize(resource.target)
+        when Origin::Queryable         then serialize_collection(resource) 
         else
           raise ArgumentError, "Could not decide how to build association from #{resource.inspect}"
         end
@@ -112,6 +114,7 @@ module Matterhorn
         when Mongoid::Criteria         then resource.klass
         when Mongoid::Relations::Proxy then resource_class(resource.target)
         when Class                     then resource
+        when Origin::Queryable         then resource.klass
         else
           raise ArgumentError, "could not determine a class for '#{resource.inspect}'"
         end
