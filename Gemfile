@@ -21,6 +21,7 @@ group :test do
   gem "combustion",         "~> 0.5.3"
   gem "serial-spec",        "~> 0.4.1"
   gem "machinist-mongoid",  "~> 0.1.0"
+  gem "kaminari",                   "~> 0.14.1"
 end
 
 gemspec

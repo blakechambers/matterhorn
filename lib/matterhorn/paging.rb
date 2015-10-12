@@ -1,5 +1,6 @@
 require "matterhorn/paging/config"
 require "matterhorn/paging/default"
+require "matterhorn/paging/per_page"
 
 module Matterhorn
   module Paging

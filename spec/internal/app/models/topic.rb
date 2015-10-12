@@ -1,6 +1,7 @@
 class Topic
   include Mongoid::Document
   include Matterhorn::Links::LinkSupport
+  include Kaminari::MongoidExtension::Document
 
   field :name
 

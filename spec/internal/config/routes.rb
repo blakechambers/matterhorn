@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     resources :tags
   end
 
+  get "search/topics", to: "search_topics#index"
+
   resources :comments
   resources :tags
   resources :topics
