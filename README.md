@@ -1,10 +1,10 @@
-# Matterhorn [![Build Status](https://travis-ci.org/blakechambers/matterhorn.svg?branch=master)](travis) [![Coverage Status](https://coveralls.io/repos/blakechambers/matterhorn/badge.svg?branch=master)](coverage)
+# Matterhorn [![Build Status](https://travis-ci.org/blakechambers/matterhorn.svg?branch=master)][travis] [![Coverage Status](https://coveralls.io/repos/blakechambers/matterhorn/badge.svg?branch=master)][coverage]
+
+Support easy REST API creation and testing that follows the [json-api][jsonapi] spec for Rails applications (specifically [rails-api][rails-api]) using [Mongoid][mongoid].  See the [ROADMAP][roadmap] for more info.
 
 ## Notice
 
 This gem was authored before active_model_serializers 0.10.x had become stable.  If you are looking for a path to enable JSON API under MongoDB, I would start with [this ticket](https://github.com/rails-api/active_model_serializers/issues/1022). At this time, this version will only work with Mongoid 4.x, and active_model_serializers 0.8.x.
-
-Support easy REST API creation and testing that follows the [json-api](jsonapi) spec for Rails applications (specifically [rails-api][rails-api]) using [Mongoid](mongoid).  See the [ROADMAP][roadmap] for more info.
 
 ## Contributing
 
