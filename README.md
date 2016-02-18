@@ -1,8 +1,10 @@
-# Matterhorn [![Build Status](https://travis-ci.org/blakechambers/matterhorn.svg?branch=master)](https://travis-ci.org/blakechambers/matterhorn) [![Coverage Status](https://coveralls.io/repos/blakechambers/matterhorn/badge.svg?branch=master)](https://coveralls.io/r/blakechambers/matterhorn?branch=master)
+# Matterhorn [![Build Status](https://travis-ci.org/blakechambers/matterhorn.svg?branch=master)](travis) [![Coverage Status](https://coveralls.io/repos/blakechambers/matterhorn/badge.svg?branch=master)](coverage)
 
-**NOTICE: this gem is currently under active development at this time. See the [issues][issues] for planned items prior to [0.1.0][milestone]**
+## Notice
 
-Support easy REST API creation and testing that follows the [json-api](http://jsonapi.org/) spec for Rails applications (specifically [rails-api][rails-api]) using MongodDB.  See the [ROADMAP][roadmap] for more info.
+This gem was authored before active_model_serializers 0.10.x had become stable.  If you are looking for a path to enable JSON API under MongoDB, I would start with [this ticket](https://github.com/rails-api/active_model_serializers/issues/1022). At this time, this version will only work with Mongoid 4.x, and active_model_serializers 0.8.x.
+
+Support easy REST API creation and testing that follows the [json-api](jsonapi) spec for Rails applications (specifically [rails-api][rails-api]) using [Mongoid](mongoid).  See the [ROADMAP][roadmap] for more info.
 
 ## Contributing
 
@@ -16,3 +18,7 @@ Support easy REST API creation and testing that follows the [json-api](http://js
 [milestone]: https://github.com/blakechambers/matterhorn/milestones/0.1.0%20-%20Initial%20release
 [roadmap]:   https://github.com/blakechambers/matterhorn/blob/master/ROADMAP.md
 [rails-api]: https://github.com/rails-api/rails-api
+[mongoid]:   https://github.com/mongodb/mongoid
+[jsonapi]:   http://jsonapi.org/
+[coverage]:  https://coveralls.io/r/blakechambers/matterhorn?branch=master
+[travis]:    https://travis-ci.org/blakechambers/matterhorn

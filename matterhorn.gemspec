@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency 'active_model_serializers', '= 0.8.3'
-  spec.add_runtime_dependency 'mongoid',                  '>= 4.0.0'
+  spec.add_runtime_dependency 'mongoid',                  '~> 4.0'
   spec.add_runtime_dependency "rails-api",                '~> 0.4.0'
   spec.add_runtime_dependency "responders",               "~> 2.0"
   spec.add_runtime_dependency "inheritable_accessors",    ">= 0.1.2"
