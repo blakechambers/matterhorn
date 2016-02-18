@@ -6,7 +6,7 @@ group :development do
 end
 
 group :development, :test do
-  gem "bundler",       "~> 1.9.1"
+  gem "bundler"
   gem "rake",          "~> 10.0"
 end
 
