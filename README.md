@@ -1,4 +1,4 @@
-# Matterhorn [![Build Status](https://travis-ci.org/blakechambers/matterhorn.svg?branch=master)][travis] [![Coverage Status](https://coveralls.io/repos/blakechambers/matterhorn/badge.svg?branch=master)][coverage]
+# Matterhorn [![Build Status](https://travis-ci.org/blakechambers/matterhorn.svg?branch=master)][travis] [![Code Climate](https://codeclimate.com/github/blakechambers/matterhorn/badges/gpa.svg)][cclimate] [![Coverage Status](https://coveralls.io/repos/blakechambers/matterhorn/badge.svg?branch=master)][coverage]
 
 Support easy REST API creation and testing that follows the [json-api][jsonapi] spec for Rails applications (specifically [rails-api][rails-api]) using [Mongoid][mongoid].  See the [ROADMAP][roadmap] for more info.
 
@@ -22,3 +22,4 @@ This gem was authored before active_model_serializers 0.10.x had become stable. 
 [jsonapi]:   http://jsonapi.org/
 [coverage]:  https://coveralls.io/r/blakechambers/matterhorn?branch=master
 [travis]:    https://travis-ci.org/blakechambers/matterhorn
+[cclimate]:  https://codeclimate.com/github/blakechambers/matterhorn
